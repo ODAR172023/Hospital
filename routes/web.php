@@ -17,6 +17,7 @@ Route::get('/', function () {
 //})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [RegistroController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/adminempleados', [RegistroController::class, 'adminempleados'])->middleware(['auth', 'verified'])->name('adminempleados');
 
 
 Route::middleware('auth')->group(function () {
