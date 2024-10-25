@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\DepartamentoController;
 
 //Route::get('/', function () {
 //return view('welcome');
@@ -18,6 +19,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [RegistroController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/adminempleados', [RegistroController::class, 'adminempleados'])->middleware(['auth', 'verified'])->name('adminempleados');
+Route::post('/asignar-departamento', [RegistroController::class, 'asignarDepartamento'])->name('asignar.departamento');
+Route::post('/actualizar-departamento', [DepartamentoController::class, 'asignarDepartamento'])->name('actualizar.departamento');
 
 
 Route::middleware('auth')->group(function () {
