@@ -9,7 +9,7 @@ class DepartamentoController extends Controller
 {
     public function asignarDepartamento(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         // Validar los datos del formulario
         $request->validate([
             'idEmpleado' => 'required|int',

@@ -46,12 +46,43 @@
                                     <td class="px-4 py-2 text-gray-900 dark:text-gray-300">{{ $registro->NombreUsuario }}</td>
                                     <td class="px-4 py-2 text-gray-900 dark:text-gray-300">{{ $registro->Departamento }}</td>
                                     <td class="px-4 py-2 text-gray-900 dark:text-gray-300">
-                                        <div class="mt-4 inline-block">
-                                            <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 border border-blue-700" onclick="openModal({{ $registro->IdEmpleado }}, '{{ $registro->NombreUsuario }}', '{{ $registro->Departamento }}')">
-                                                Asignar Nuevo Departamento
+                                        <form method="POST" action="{{ route('actualizar.departamento') }}">
+                                            @csrf
+                                            <!-- Campo oculto para el ID del empleado -->
+                                            <input type="hidden" name="idEmpleado" value="{{ $registro->IdEmpleado }}">
+                                            <!-- Select de departamentos -->
+                                            <select name="nuevoDepartamento" class="block w-full mt-1 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                                                <option value="ADMINISTRACIÓN">ADMINISTRACIÓN</option>
+                                                <option value="SECRETARIA">SECRETARIA</option>
+                                                <option value="UGI">UGI</option>
+                                                <option value="ADMISIÓN Y ARCHIVO">ADMISIÓN Y ARCHIVO</option>
+                                                <option value="ALMACEN">ALMACEN</option>
+                                                <option value="ANESTESIA">ANESTESIA</option>
+                                                <option value="ASEO">ASEO</option>
+                                                <option value="BIENES NACIONALES">BIENES NACIONALES</option>
+                                                <option value="COCINA">COCINA</option>
+                                                <option value="ENFERMERIA">ENFERMERIA</option>
+                                                <option value="FARMACIA">FARMACIA</option>
+                                                <option value="GESTIÓN CLINICA">GESTIÓN CLINICA</option>
+                                                <option value="INSTRUMENTISTA">INSTRUMENTISTA</option>
+                                                <option value="LABORATORIO">LABORATORIO</option>
+                                                <option value="LAVANDERIA">LAVANDERIA</option>
+                                                <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                                                <option value="ODONTOLOGIA">ODONTOLOGIA</option>
+                                                <option value="PLANIFICACIÓN">PLANIFICACIÓN</option>
+                                                <option value="RECEPTORIA DE FONDOS">RECEPTORIA DE FONDOS</option>
+                                                <option value="RRHH">RRHH</option>
+                                                <option value="SIN DEFINIR">SIN DEFINIR</option>
+                                                <option value="TRANSPORTE">TRANSPORTE</option>
+                                                <option value="UAU">UAU</option>
+                                                <option value="VIGILANCIA">VIGILANCIA</option>
+                                            </select>
+
+                                            <!-- Botón de asignar -->
+                                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 border border-blue-700">
+                                                Asignar
                                             </button>
-                                        </div>
-                                        <br>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -70,7 +101,7 @@
                                 <form id="asignar-departamento-form" method="POST" action="{{ route('actualizar.departamento') }}">
                                     @csrf
                                     <!-- ID del empleado (oculto) -->
-                                    <input type="hidden" name="idEmpleado" id="idEmpleado">
+                                    <input name="idEmpleado" id="idEmpleado" value="{{ $registro->IdEmpleado }}">
                                     <div class="mb-4">
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ID del Empleado</label>
                                         <p id="IdEmpleados" class="text-gray-900 dark:text-gray-100"></p>
