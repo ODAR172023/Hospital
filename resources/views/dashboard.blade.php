@@ -40,7 +40,7 @@
                         <div>
                             <h3 class="text-lg font-bold mb-2">Generar Reportes</h3>
                             <p class="text-sm">Genera reportes de asistencia de los empleados.</p>
-                            <a href="" class="text-green-500 hover:text-green-600 mt-2 inline-block">
+                            <a href="{{ route('reporte.asistencia') }}" class="text-green-500 hover:text-green-600 mt-2 inline-block">
                                 Ver más
                             </a>
                         </div>
