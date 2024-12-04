@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ModuloController;
 
 //Route::get('/', function () {
 //return view('welcome');
@@ -18,6 +19,7 @@ Route::get('/', function () {
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/ejecutar-modulo', [ModuloController::class, 'ejecutarModulo']);
 Route::get('/reporte-asistencia', [ReporteController::class, 'create'])->middleware(['auth', 'verified'])->name('reporte.asistencia');
 Route::post('/reporte-asistencia', [ReporteController::class, 'store'])->middleware(['auth', 'verified'])->name('generar.reporte');
 

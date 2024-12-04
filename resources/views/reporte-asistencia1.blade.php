@@ -10,12 +10,15 @@
         .company-info { text-align: center; margin-bottom: 15px; color: #555; }
         h2 { margin: 5px; font-size: 22px; color: #0056b3; }
         p { margin: 3px; font-size: 14px; }
-        .report-details { text-align: center; font-size: 14px; margin-bottom: 20px; }
+        .report-details { text-align: left; font-size: 14px; margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 12px; }
         th { background-color: #0056b3; color: white; }
         .day-row { background-color: #f0f8ff; font-weight: bold; }
         .divider { border-top: 2px solid #0056b3; margin: 10px 0; }
+        .signature-table { width: 100%; margin-top: 30px; }
+        .signature-table td { text-align: center; vertical-align: top; }
+        .signature-line { margin: 0; padding: 0; }
     </style>
 </head>
 <body>
@@ -26,39 +29,42 @@
         <h2>HOSPITAL SAN LORENZO</h2>
         <p><strong>Secretaría de Salud</strong></p>
         
-        <div class="divider"></div>
     </div>
-
-    <div class="company-info">
-        <strong><p>Tarjeta de Asistencia</p></strong>
-        <p>Del {{ \Carbon\Carbon::parse($fecha_inicio)->format('d/m/Y') }} al {{ \Carbon\Carbon::parse($fecha_fin)->format('d/m/Y') }}</p>
-    </div>
+    <div class="divider"></div>
 
     <div class="report-details">
-        <p><strong>Empleado:</strong> {{ $empleado->Name }}</p>
+        <p><strong>Empleado:</strong> {{ $empleado->Name }} </p>
         <p><strong>Departamento:</strong> {{ $empleado->Departamento ?? 'No asignado' }}</p>
     </div>
 
+    <div class="divider"></div>
+
+    <div class="company-info">
+        <strong><p><u>Tarjeta de Asistencia</u></p></strong>
+        <p><u>Del {{ \Carbon\Carbon::parse($fecha_inicio)->format('d/m/Y') }} al {{ \Carbon\Carbon::parse($fecha_fin)->format('d/m/Y') }}</u></p>
+    </div>
+
     <table>
-        <thead>
-            <!-- Encabezados de los días del mes -->
-            <tr>
-                @foreach(range(1, 7) as $i) <!-- Cambia 7 por el número de días que quieres mostrar por fila -->
-                    <th>Fecha</th>
-                @endforeach
-            </tr>
-        </thead>
         <tbody>
             @foreach($registros->chunk(7) as $semana) <!-- Agrupa los registros en filas de 7 días -->
                 <tr>
                     @foreach($semana as $registro)
-                        <td class="day-cell">
-                            <div class="day-header">
-                                {{ \Carbon\Carbon::parse($registro->Fecha)->locale('es')->translatedFormat('l, d/m/Y') }}
+                        <td class="day-cell" style="margin: 0px; padding: 0px; width: 80px;">
+                            <div class="day-header" style="background-color: #0056b3; color:white; width: 100%; height: 50px; paddin: 40px;">
+                               <p ><strong> {{ \Carbon\Carbon::parse($registro->Fecha)->locale('es')->translatedFormat('l, d/m/Y') }} </strong></p>
                             </div>
                             <div class="day-content">
-                                <p><strong>Entrada:</strong> {{ \Carbon\Carbon::parse($registro->HoraEntrada)->format('H:i') ?? '-' }}</p>
-                                <p><strong>Salida:</strong> {{ \Carbon\Carbon::parse($registro->HoraSalida)->format('H:i') ?? '-' }}</p>
+                                @if (\Carbon\Carbon::parse($registro->HoraEntrada)->format('Y-m-d H:i') === \Carbon\Carbon::parse($registro->HoraSalida)->format('Y-m-d H:i'))
+                                    <!-- Si la fecha y hora de entrada y salida son iguales -->
+                                    <br>
+                                    <p><strong>Entrada /</strong></p>
+                                    <p><strong>Salida: </strong></p>
+                                    <p>{{ \Carbon\Carbon::parse($registro->HoraEntrada)->format('H:i') ?? '-' }}</p>
+                                @else
+                                    <!-- Si son diferentes, muestra entrada y salida por separado -->
+                                    <p><strong>Entrada:</strong> {{ \Carbon\Carbon::parse($registro->HoraEntrada)->format('H:i') ?? '-' }}</p>
+                                    <p><strong>Salida: </strong> {{ \Carbon\Carbon::parse($registro->HoraSalida)->format('H:i') ?? '-' }}</p>
+                                @endif
                             </div>
                         </td>
                     @endforeach
@@ -75,11 +81,23 @@
     <br>
     <br>
     <br>
+<!-- Usamos una tabla sin bordes para las firmas -->
+<table class="signature-table" border="0" style="width: 100%; margin-top: 30px; border-collapse: collapse;">
+    <tr>
+        <td style="text-align: center; vertical-align: top; padding: 0;">
+            <p class="signature-line" style="margin: 0;">___________________________________</p>
+            <p><strong>Abog. HECTOR ALVAREZ</strong></p>
+            <p><strong>Jefe de Recursos Humanos</strong></p>
+        </td>
+        <td style="text-align: center; vertical-align: top; padding: 0;">
+            <p class="signature-line" style="margin: 0;">___________________________________</p>
+            <p><strong>{{ $empleado->Name }} </strong></p>
+            <p><strong>Empleado</strong></p>
+        </td>
+    </tr>
+</table>
 
-    <div style="margin-top: 20px; text-align: center;">
-        <p><strong>___________________________________</strong></p> <!-- Actualizar este valor dinámicamente si es necesario -->
-        <p><strong>Ing. Elder Girón</strong></p>
-        <p><strong>Jefe Tecnología e Información</strong></p>
-    </div>
+
+
 </body>
 </html>

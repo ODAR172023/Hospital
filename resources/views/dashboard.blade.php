@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta: Otro módulo (ejemplo) -->
+                <!-- Tarjeta: Otro módulo -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
                     <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center">
                         <div class="mr-4 p-4 bg-yellow-500 text-white rounded-full">
@@ -57,9 +57,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold mb-2">Nuevo Módulo (Ejemplo)</h3>
-                            <p class="text-sm">Agrega más módulos según las necesidades del sistema.</p>
-                            <a href="#" class="text-yellow-500 hover:text-yellow-600 mt-2 inline-block">
+                            <h3 class="text-lg font-bold mb-2">Administrar Reloj Biométrico</h3>
+                            <p class="text-sm">Administra y actualiza todos los registros del reloj a la base de datos.</p>
+                            <a href="{{ url('/ejecutar-modulo') }}" class="text-yellow-500 hover:text-yellow-600 mt-2 inline-block">
                                 Ver más
                             </a>
                         </div>
