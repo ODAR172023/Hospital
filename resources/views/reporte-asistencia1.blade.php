@@ -81,23 +81,20 @@
     <br>
     <br>
     <br>
-<!-- Usamos una tabla sin bordes para las firmas -->
-<table class="signature-table" border="0" style="width: 100%; margin-top: 30px; border-collapse: collapse;">
-    <tr>
-        <td style="text-align: center; vertical-align: top; padding: 0;">
-            <p class="signature-line" style="margin: 0;">___________________________________</p>
-            <p><strong>Abog. HECTOR ALVAREZ</strong></p>
-            <p><strong>Jefe de Recursos Humanos</strong></p>
-        </td>
-        <td style="text-align: center; vertical-align: top; padding: 0;">
-            <p class="signature-line" style="margin: 0;">___________________________________</p>
-            <p><strong>{{ $empleado->Name }} </strong></p>
-            <p><strong>Empleado</strong></p>
-        </td>
-    </tr>
-</table>
-
-
-
+    <!-- Usamos una tabla sin bordes para las firmas -->
+    <table class="signature-table"  style="width: 100%; margin-top: 30px; border-collapse: collapse;">
+        <tr>
+            <td style="text-align: center; border: 0; vertical-align: top; padding: 0;">
+                <p class="signature-line" style="margin: 0;">___________________________________</p>
+                <p><strong>Abog. HECTOR ALVAREZ</strong></p>
+                <p><strong>Jefe de Recursos Humanos</strong></p>
+            </td>
+            <td style="text-align: center; border: 0; vertical-align: top; padding: 0;">
+                <p class="signature-line" style="margin: 0;">___________________________________</p>
+                <p><strong>{{ $empleado->Name }} </strong></p>
+                <p><strong>Empleado</strong></p>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

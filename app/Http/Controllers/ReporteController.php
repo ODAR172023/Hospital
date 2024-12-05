@@ -10,9 +10,21 @@ class ReporteController extends Controller
 {
     public function create()
     {
-        // Retornar la vista para la generación de reportes
-        return view('reporte-asistencia');
+        // Consultar la información de los empleados eliminando duplicados
+        $empleados = DB::table('Usuarios as u')
+            ->leftJoin('Departamento as d', 'd.idEmpleado', '=', 'u.EnrollNumber')
+            ->select(
+                'u.EnrollNumber as IdEmpleado',      // ID único del empleado
+                'u.Name as NombreUsuario',           // Nombre del empleado
+                'd.NombreDepartamento as Departamento' // Departamento
+            )
+            ->distinct()
+            ->get();
+
+        // Retornar la vista con la lista de empleados
+        return view('reporte-asistencia', compact('empleados'));
     }
+
 
     public function store(Request $request)
     {
