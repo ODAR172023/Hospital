@@ -59,6 +59,7 @@ class ReporteController extends Controller
                 DB::raw("MAX(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s')) as HoraSalida")
             )
             ->where('u.EnrollNumber', $request->idEmpleado)
+            ->whereNotNull('r.LogDateTime')
             ->whereBetween(DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%Y-%m-%d')"), [$request->fecha_inicio, $request->fecha_fin])
             ->groupBy('u.EnrollNumber', 'u.Name', 'd.NombreDepartamento', 'Fecha')
             ->orderBy('Fecha', 'asc')
