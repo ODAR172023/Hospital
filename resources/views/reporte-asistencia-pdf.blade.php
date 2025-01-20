@@ -24,7 +24,7 @@
 </head>
 <body>
     <h1 style="text-align: center;">Reporte de Asistencia</h1>
-    <h1 style="text-align: center;">{{ $hoy}}</h1>
+    <h1 style="text-align: center;">{{$hoy}}</h1>
     <table>
         <thead>
             <tr>
