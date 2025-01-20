@@ -6,7 +6,7 @@
     <style>
         body { font-family: 'Arial', sans-serif; margin: 20px; color: #333; }
         .header { text-align: center; margin-bottom: 30px; }
-        .header img { height: 120px; width: 110px;}
+        .header img { height: 120px; width: 110px; }
         .company-info { text-align: center; margin-bottom: 15px; color: #555; }
         h2 { margin: 5px; font-size: 22px; color: #00bde5; }
         p { margin: 3px; font-size: 14px; }
@@ -23,37 +23,47 @@
 </head>
 <body>
 <div class="header">
-    
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo1.png'))) }}" style="float: left; margin-top: -30px;">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo3.png'))) }}" style="float: right; margin-top: -33px;">
-        <h2>HOSPITAL SAN LORENZO</h2>
-        <p><strong>Secretaría de Salud</strong></p>
-        
-    </div>
-    <div class="divider"></div>
+    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo1.png'))) }}" style="float: left; margin-top: -30px;">
+    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo3.png'))) }}" style="float: right; margin-top: -33px;">
+    <h2>HOSPITAL SAN LORENZO</h2>
+    <p><strong>Secretaría de Salud</strong></p>
+</div>
+<div class="divider"></div>
 
-    <div class="report-details">
-        <p><strong>Empleado:</strong> {{ $empleado->Name }} </p>
-        <p><strong>Departamento:</strong> {{ $empleado->Departamento ?? 'No asignado' }}</p>
-    </div>
+<div class="report-details">
+    <p><strong>Empleado:</strong> {{ $empleado->Name }}</p>
+    <p><strong>Departamento:</strong> {{ $empleado->Departamento ?? 'No asignado' }}</p>
+</div>
 
-    <div class="divider"></div>
+<div class="divider"></div>
 
-    <div class="company-info">
-        <strong><p><u>Tarjeta de Asistencia</u></p></strong>
-        <p><u>Del {{ \Carbon\Carbon::parse($fecha_inicio)->format('d/m/Y') }} al {{ \Carbon\Carbon::parse($fecha_fin)->format('d/m/Y') }}</u></p>
-    </div>
+<div class="company-info">
+    <strong><p><u>Tarjeta de Asistencia</u></p></strong>
+    <p><u>Del {{ \Carbon\Carbon::parse($fecha_inicio)->format('d/m/Y') }} al {{ \Carbon\Carbon::parse($fecha_fin)->format('d/m/Y') }}</u></p>
+</div>
 
-    <table>
-        <tbody>
-            @foreach($registros->chunk(7) as $semana) <!-- Agrupa los registros en filas de 7 días -->
-                <tr>
-                    @foreach($semana as $registro)
-                        <td class="day-cell" style="margin: 0px; padding: 0px; width: 80px;">
-                            <div class="day-header" style="background-color: #00bde5; color:black; width: 100%; height: 50px; paddin: 40px;">
-                               <p style="padding-top: 7px;"> {{ \Carbon\Carbon::parse($registro->Fecha)->locale('es')->translatedFormat('l, d/m/Y') }} </p>
-                            </div>
-                            <div class="day-content">
+<table>
+    <tbody>
+        @php
+            $start = \Carbon\Carbon::parse($fecha_inicio);
+            $end = \Carbon\Carbon::parse($fecha_fin);
+            $current = $start->copy();
+        @endphp
+        @while($current <= $end)
+            <tr>
+                @for($i = 0; $i < 7; $i++)
+                    @if($current > $end)
+                        @break
+                    @endif
+                    <td class="day-cell">
+                        <div class="day-header" style="background-color: #00bde5; color:black; width: 100%; height: 50px;">
+                            <p style="padding-top: 7px;">{{ $current->locale('es')->translatedFormat('l, d/m/Y') }}</p>
+                        </div>
+                        <div class="day-content">
+                            @php
+                                $registro = $registros->firstWhere('Fecha', $current->format('Y-m-d'));
+                            @endphp
+                            @if($registro)
                                 @if (\Carbon\Carbon::parse($registro->HoraEntrada)->format('Y-m-d H:i') === \Carbon\Carbon::parse($registro->HoraSalida)->format('Y-m-d H:i'))
                                     <!-- Si la fecha y hora de entrada y salida son iguales -->
                                     <br>
@@ -65,18 +75,24 @@
                                     <p><strong>Entrada:</strong> {{ \Carbon\Carbon::parse($registro->HoraEntrada)->format('H:i') ?? '-' }}</p>
                                     <p><strong>Salida: </strong> {{ \Carbon\Carbon::parse($registro->HoraSalida)->format('H:i') ?? '-' }}</p>
                                 @endif
-                            </div>
-                        </td>
-                    @endforeach
-                    <!-- Añade celdas vacías si la semana no tiene 7 registros -->
-                    @for($i = count($semana); $i < 7; $i++)
-                        <td class="day-cell"></td>
-                    @endfor
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <br>
+                            @else
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <p><strong>Vacío</strong></p>
+                            @endif
+                        </div>
+                    </td>
+                    @php
+                        $current->addDay();
+                    @endphp
+                @endfor
+            </tr>
+        @endwhile
+    </tbody>
+</table>
+<br>
     <br>
     <br>
     <br>

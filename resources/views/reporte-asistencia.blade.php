@@ -50,6 +50,70 @@
                             </div>
                         </div>
                     </form>
+
+                    <!-- Tabla de registros del día -->
+                    <h3 class="text-lg font-medium mt-8">Registros del Día</h3>
+                    <br>
+                    <br>
+                     <!-- Formulario de búsqueda -->
+                     <form method="GET" action="{{ route('reporte.asistencia') }}" class="mb-4 flex items-center justify-between">
+                        <!-- Sección izquierda: Buscador y botón Buscar -->
+                        <div class="flex items-center space-x-4">
+                            <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" 
+                                class="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                            <button type="submit" 
+                                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                Buscar
+                            </button>
+                        </div>
+                        <!-- Sección derecha: Botón Exportar PDF -->
+                        <div>
+                            <a href="{{ route('export-pdf') }}" 
+                                class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                Exportar Tabla
+                            </a>
+                        </div>
+                    </form>
+
+                    @if ($registrosHoy)
+                        <div class="overflow-x-auto mt-4">
+                            <table class="table-auto w-full border-collapse border border-gray-300 dark:border-gray-700">
+                                <thead>
+                                    <tr class="bg-gray-100 dark:bg-gray-700">
+                                        <th class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-200">ID</th>
+                                        <th class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-200">Nombre</th>
+                                        <th class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-200">Departamento</th>
+                                        <th class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-200">Fecha</th>
+                                        <th class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-200">Hora Registro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($registrosHoy as $registro)
+                                        <tr class="{{ $loop->odd ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700' }}">
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100">{{ $registro->ID }}</td>
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100">{{ $registro->Name }}</td>
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100">{{ $registro->Departamento ?? 'Sin Departamento' }}</td>
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100">{{ $registro->Fecha }}</td>
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100">{{ $registro->HoraRegistro }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="px-4 py-2 text-center text-sm text-gray-500 dark:text-gray-400">
+                                                No hay registros para mostrar.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Paginación -->
+                        <div class="mt-4">
+                            {{ $registrosHoy->links() }}
+                        </div>
+                    @else
+                        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">No tienes permiso para ver los registros del día.</p>
+                    @endif
                 </div>
             </div>
         </div>

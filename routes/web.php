@@ -15,15 +15,17 @@ Route::get('/', function () {
     return redirect()->route('login'); // Redirecciona a /login
 });
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::get('/ejecutar-modulo', [ModuloController::class, 'ejecutarModulo']);
 Route::get('/reporte-asistencia', [ReporteController::class, 'create'])->middleware(['auth', 'verified'])->name('reporte.asistencia');
 Route::post('/reporte-asistencia', [ReporteController::class, 'store'])->middleware(['auth', 'verified'])->name('generar.reporte');
+Route::get('/export-pdf', [ReporteController::class, 'exportPdf'])->middleware(['auth', 'verified'])->name('export-pdf');
 
-Route::get('/dashboard', [RegistroController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', [RegistroController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/adminempleados', [RegistroController::class, 'adminempleados'])->middleware(['auth', 'verified'])->name('adminempleados');
 Route::post('/asignar-departamento', [RegistroController::class, 'asignarDepartamento'])->name('asignar.departamento');
 Route::post('/actualizar-departamento', [DepartamentoController::class, 'asignarDepartamento'])->name('actualizar.departamento');
