@@ -46,7 +46,7 @@ class ReporteController extends Controller
         $search = $request->input('search', '');
 
         // Consultar los registros del día actual con búsqueda, orden y paginación
-        $registrosHoy = DB::table('Registros as r')
+        $subQuery = DB::table('Registros as r')
             ->leftJoin('Usuarios as u', 'u.EnrollNumber', '=', 'r.IndRegID')
             ->leftJoin('Departamento as d', 'd.idEmpleado', '=', 'u.EnrollNumber')
             ->select(
@@ -54,15 +54,19 @@ class ReporteController extends Controller
                 'u.Name',
                 'd.NombreDepartamento as Departamento',
                 DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%Y-%m-%d') as Fecha"),
-                DB::raw("STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s') as HoraRegistro")
+                DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%H:%i:%s') as HoraRegistro"),
+                'r.LogDateTime'
             )
             ->whereNotNull('r.LogDateTime')
             ->where(DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%Y-%m-%d')"), $hoy)
             ->when($search, function ($query, $search) {
                 return $query->where('u.Name', 'LIKE', "%$search%");
             })
-            ->orderBy(DB::raw("STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s')"), 'desc')
-            ->distinct()
+            ->distinct();
+
+        $registrosHoy = DB::table(DB::raw("({$subQuery->toSql()}) as sub"))
+            ->mergeBindings($subQuery)
+            ->orderBy('LogDateTime', 'desc')
             ->paginate(10);
 
         return view('reporte-asistencia', compact('empleados', 'registrosHoy', 'search'));
@@ -81,7 +85,8 @@ class ReporteController extends Controller
                 'u.Name',
                 'd.NombreDepartamento as Departamento',
                 DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%Y-%m-%d') as Fecha"),
-                DB::raw("STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s') as HoraRegistro")
+                DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%H:%i:%s') as HoraRegistro"),
+                'r.LogDateTime'
             )
             ->whereNotNull('r.LogDateTime')
             ->where(DB::raw("DATE_FORMAT(STR_TO_DATE(r.LogDateTime, '%d/%m/%Y %H:%i:%s'), '%Y-%m-%d')"), $hoy)

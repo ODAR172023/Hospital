@@ -8,68 +8,80 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-medium mb-4">Generar Reporte</h3>
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-gray-200 underline">Generar Reporte</h3>
                     <!-- Formulario de filtros -->
                     <form method="POST" action="{{ route('generar.reporte') }}" class="space-y-6" target="_blank">
                         @csrf
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="space-y-2">
                                 <label for="idEmpleado" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Buscar Empleado
                                 </label>
 
                                 <!-- Select con funcionalidad de búsqueda -->
-                                <select name="idEmpleado" id="idEmpleado" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
+                                <select name="idEmpleado" id="idEmpleado" class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
                                     <option value="" disabled selected>Seleccione o busque un empleado...</option>
                                     @foreach ($empleados as $empleado)
                                         <option value="{{ $empleado->IdEmpleado }}">
-                                            {{ $empleado->NombreUsuario }} ({{ $empleado->Departamento ?? 'Sin Departamento' }})
+                                        {{ $empleado->IdEmpleado}} - {{ $empleado->NombreUsuario }} ({{ $empleado->Departamento ?? 'Sin Departamento' }})
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div>
-                                <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Fecha Inicio
-                                </label>
-                                <input type="date" name="fecha_inicio" id="fecha_inicio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
-                            </div>
+                            <!-- Línea 2: Fechas en misma línea -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-2">
+                                        <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Fecha Inicio
+                                        </label>
+                                        <input type="date" name="fecha_inicio" id="fecha_inicio" 
+                                               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                                               required>
+                                    </div>
 
-                            <div>
-                                <label for="fecha_fin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Fecha Fin
-                                </label>
-                                <input type="date" name="fecha_fin" id="fecha_fin" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
-                            </div>
+                                    <div class="space-y-2">
+                                        <label for="fecha_fin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Fecha Fin
+                                        </label>
+                                        <input type="date" name="fecha_fin" id="fecha_fin" 
+                                               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                                               required>
+                                    </div>
+                                </div>
 
-                            <div class="mt-4">
-                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 border border-blue-700">
-                                    Generar Reporte
-                                </button>
+                                <!-- Línea 3: Botón Centrado -->
+                                <div class="flex justify-center mt-4">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                        Generar Reporte
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    <br>
+                    <br>
+
+                    <div class="border-t border-gray-300 my-8 dark:border-gray-600"></div>
 
                     <!-- Tabla de registros del día -->
-                    <h3 class="text-lg font-medium mt-8">Registros del Día</h3>
                     <br>
-                    <br>
+                    <h3 class="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-gray-200 underline">Registros del Dia</h3>
                      <!-- Formulario de búsqueda -->
                      <form method="GET" action="{{ route('reporte.asistencia') }}" class="mb-4 flex items-center justify-between">
                         <!-- Sección izquierda: Buscador y botón Buscar -->
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-6">
                             <input type="text" name="search" placeholder="Buscar por nombre..." value="{{ $search ?? '' }}" 
-                                class="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                class="px-6 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:text-white">
                             <button type="submit" 
-                                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                                 Buscar
                             </button>
                         </div>
                         <!-- Sección derecha: Botón Exportar PDF -->
                         <div>
                             <a href="{{ route('export-pdf') }}" 
-                                class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
                                 Exportar Tabla
                             </a>
                         </div>
