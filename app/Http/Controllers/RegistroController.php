@@ -43,8 +43,13 @@ class RegistroController extends Controller
         // Ejecutar la consulta con paginación (20 registros por página)
         $registros = $query->paginate(20);
 
-        // Retornar la vista del dashboard con los datos paginados y filtrados
-        return view('adminempleados', compact('registros'));
+          // Si no se encontraron resultados, pasar un mensaje a la vista
+        if ($registros->isEmpty()) {
+            return view('adminempleados', compact('registros'))
+                ->with('error', 'No se encontró ningún usuario. Inténtelo de nuevo.');
+        } else {
+            return view('adminempleados', compact('registros'));
+        }
     }
 
     public function asignarDepartamento(Request $request)

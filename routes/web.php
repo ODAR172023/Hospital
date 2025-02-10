@@ -6,6 +6,7 @@ use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ModuloController;
+use App\Http\Controllers\LogController;
 
 //Route::get('/', function () {
 //return view('welcome');
@@ -19,6 +20,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+});
 
 Route::get('/ejecutar-modulo', [ModuloController::class, 'ejecutarModulo']);
 Route::get('/reporte-asistencia', [ReporteController::class, 'create'])->middleware(['auth', 'verified'])->name('reporte.asistencia');

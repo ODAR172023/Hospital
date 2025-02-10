@@ -1,7 +1,7 @@
 <x-guest-layout>
        <!-- Logo -->
     <div class="flex justify-center mb-6">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-40">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-45">
     </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />

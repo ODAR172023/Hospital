@@ -122,6 +122,20 @@ class ReporteController extends Controller
             return redirect()->back()->with('error', 'Empleado no encontrado.');
         }
 
+          // Obtener el usuario autenticado
+        $usuario = Auth::user();
+
+        // Insertar registro en la tabla logs
+        DB::table('logs')->insert([
+            'usuario_id' => $usuario->id,
+            'nombre_usuario' => $usuario->name,
+            'fecha_generacion' => now(),
+            'empleado_id' => $request->idEmpleado,
+            'nombre_empleado' => $empleado->Name,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
+        ]);
+
         // Adjust the date format for LogDateTime to Y-m-d H:i:s for database query
         $registros = DB::table('Registros as r')
             ->leftJoin('Usuarios as u', 'u.EnrollNumber', '=', 'r.IndRegID')

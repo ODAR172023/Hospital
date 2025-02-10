@@ -42,4 +42,19 @@
             </main>
         </div>
     </body>
+    <footer class="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 py-6 mt-10">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center" style="margin-bottom: 15px;">
+            
+        </div>
+
+        <!-- Línea Divisoria -->
+        <hr class="my-4 border-gray-300 dark:border-gray-700">
+
+        <!-- Derechos Reservados -->
+        <div class="text-center text-sm">
+            &copy; 2025 Hospital San Lorenzo.
+        </div>
+    </div>
+    </footer>
 </html>
